@@ -115,14 +115,15 @@ export default function Home() {
       <Head>
         <title>Tic Tac Toe</title>
       </Head>
-      <h1>Tic Tac Toe - v2.0</h1>
+      <h1>Tic Tac Toe</h1>
       <div className="game">
-        <div className="game__menu">
-          <p>Next turn: {xMove === true ? "X" : "O"}</p>
-          <p className="subtext">
-            Remember, on your 4th move, your 1st move disappears!
-          </p>
-        </div>
+        <p className="subtext">
+          <span>
+            This is not your normal Tic-Tac-Toe, this one comes with a twist.
+          </span>
+          <span>On your 4th move, your 1st move disappears! Enjoy ;)</span>
+        </p>
+        <p className="subtext"></p>
         <div className="game__board">
           {[...Array(9)].map((v, idx) => {
             return (
@@ -139,6 +140,9 @@ export default function Home() {
               </div>
             );
           })}
+        </div>
+        <div className="game__menu">
+          <p>Current turn: {xMove === true ? "X" : "O"}</p>
         </div>
       </div>
 
