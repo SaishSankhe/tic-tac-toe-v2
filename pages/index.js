@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-const WINNING_COMBO = [
+const WINNING_MOVES = [
   [0, 1, 2],
   [3, 4, 5],
   [6, 7, 8],
@@ -11,8 +11,12 @@ const WINNING_COMBO = [
   [0, 4, 8],
   [2, 4, 6],
 ];
+
 export default function Home() {
-  const [xTurn, setXTurn] = useState(true);
+  const [xMove, setXMove] = useState(true);
+  const [xMovesQueue, setXMovesQueue] = useState([]);
+  const [oMovesQueue, setOMovesQueue] = useState([]);
+  const [nextToDisappear, setNextToDisappear] = useState(null);
   const [won, setWon] = useState(false);
   const [wonCombo, setWonCombo] = useState([]);
   const [boardData, setBoardData] = useState({
@@ -26,27 +30,50 @@ export default function Home() {
     7: "",
     8: "",
   });
-  const [isDraw, setIsDraw] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
+
   useEffect(() => {
-    checkWinner();
-    checkDraw();
-  }, [boardData]);
+    let idxToBeRemoved;
+
+    // first X to disappear
+    if (oMovesQueue.length === 3 && xMove) setNextToDisappear(xMovesQueue[0]);
+
+    // upcoming Os to disappear
+    if (xMovesQueue.length >= 4 && !xMove) {
+      idxToBeRemoved = xMovesQueue[0];
+      setXMovesQueue(xMovesQueue.slice(1));
+      setNextToDisappear(oMovesQueue[0]);
+    }
+
+    // upcoming Xs to disappear
+    if (oMovesQueue.length >= 4 && xMove) {
+      idxToBeRemoved = oMovesQueue[0];
+      setOMovesQueue(oMovesQueue.slice(1));
+      setNextToDisappear(xMovesQueue[0]);
+    }
+
+    const updatedBoardData = { ...boardData, [idxToBeRemoved]: "" };
+    setBoardData(updatedBoardData);
+
+    checkWinner(updatedBoardData);
+  }, [xMovesQueue, oMovesQueue]);
+
   const updateBoardData = (idx) => {
     if (!boardData[idx] && !won) {
-      //will check whether specify idx is empty or not
-      let value = xTurn === true ? "X" : "O";
+      let value = xMove === true ? "X" : "O";
       setBoardData({ ...boardData, [idx]: value });
-      setXTurn(!xTurn);
+
+      if (xMove) {
+        setXMovesQueue([...xMovesQueue, idx]);
+      } else {
+        setOMovesQueue([...oMovesQueue, idx]);
+      }
+      setXMove(!xMove);
     }
   };
-  const checkDraw = () => {
-    let check = Object.keys(boardData).every((v) => boardData[v]);
-    setIsDraw(check);
-    if (check) setModalTitle("Match Draw!!!");
-  };
-  const checkWinner = () => {
-    WINNING_COMBO.map((bd) => {
+
+  const checkWinner = (boardData) => {
+    WINNING_MOVES.map((bd) => {
       const [a, b, c] = bd;
       if (
         boardData[a] &&
@@ -55,7 +82,7 @@ export default function Home() {
       ) {
         setWon(true);
         setWonCombo([a, b, c]);
-        setModalTitle(`Player ${!xTurn ? "X" : "O"} Won!!!`);
+        setModalTitle(`Player ${!xMove ? "X" : "O"} Won!!!`);
 
         return;
       }
@@ -74,22 +101,27 @@ export default function Home() {
       7: "",
       8: "",
     });
-    setXTurn(true);
+    setXMove(true);
     setWon(false);
     setWonCombo([]);
-    setIsDraw(false);
     setModalTitle("");
+    setXMovesQueue([]);
+    setOMovesQueue([]);
+    setNextToDisappear(null);
   };
+
   return (
     <div>
       <Head>
         <title>Tic Tac Toe</title>
       </Head>
-      <h1>Tic Tac Toe</h1>
+      <h1>Tic Tac Toe - v2.0</h1>
       <div className="game">
         <div className="game__menu">
-          <p>{xTurn === true ? "X Turn" : "O Turn"}</p>
-          <p>{`Game Won:${won} Draw: ${isDraw}`}</p>
+          <p>Next turn: {xMove === true ? "X" : "O"}</p>
+          <p className="subtext">
+            Remember, on your 4th move, your 1st move disappears!
+          </p>
         </div>
         <div className="game__board">
           {[...Array(9)].map((v, idx) => {
@@ -101,7 +133,7 @@ export default function Home() {
                 key={idx}
                 className={`square ${
                   wonCombo.includes(idx) ? "highlight" : ""
-                }`}
+                } ${idx === nextToDisappear ? "disappearing-next" : ""}`}
               >
                 {boardData[idx]}
               </div>
