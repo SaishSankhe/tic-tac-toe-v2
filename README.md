@@ -1,34 +1,104 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎮 Tic-Tac-Toe V2 - The Disappearing Moves Edition
 
-## Getting Started
+A unique twist on the classic Tic-Tac-Toe game where every 4th move causes your first move to disappear! Built with Next.js and React.
 
-First, run the development server:
+## Game Concept
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+This isn't your ordinary Tic-Tac-Toe! The game introduces an innovative mechanic that adds strategic depth:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Classic 3x3 grid**: Standard Tic-Tac-Toe setup
+- **The disappearing twist**: On every 4th move, your very first move vanishes from the board
+- **Strategic gameplay**: Players must think ahead, knowing their earliest moves won't last
+- **Dynamic board**: The game state constantly evolves as moves disappear
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## 🎨 Screenshots
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### Home Page
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<img src="public/screenshots/home_page.png" alt="Home Page" width="80%" />
 
-## Learn More
+### Vanishing Move in Action
 
-To learn more about Next.js, take a look at the following resources:
+<img src="public/screenshots/vanishing-move.png" alt="Vanishing Move" width="400" />
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Gameplay Demo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<img src="public/screenshots/game-play.gif" alt="Gameplay Demo" width="400" />
 
-## Deploy on Vercel
+## How to Play
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Take Turns**: Players alternate placing X's and O's on the 3x3 grid
+2. **Watch for Disappearing Moves**: After 4 moves, the first move of the current player disappears
+3. **Plan Strategically**: Consider which moves to make, knowing they'll eventually vanish
+4. **Win Conditions**: Get three of your symbols in a row (horizontal, vertical, or diagonal)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 🚀 Live Demo
+
+[Play the game here!](https://vanishing-tictactoe.vercel.app/)
+
+## 🛠️ Built With
+
+- **Next.js 12.1.0** - React framework for production
+- **React 17.0.2** - UI library
+- **CSS3** - Styling and animations
+- **JavaScript ES6+** - Game logic and state management
+
+## Key Features
+
+- **Responsive Design**: Works on desktop and mobile devices
+- **Visual Feedback**:
+  - Winning combinations highlighted in aquamarine
+  - Next-to-disappear moves shown with 50% opacity
+  - Smooth animations and transitions
+- **Game State Management**: Clean separation of concerns with custom hooks
+- **Modular Architecture**: Reusable components and utilities
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 14+
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yourusername/tic-tac-toe-v2.git
+   cd tic-tac-toe-v2
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🎮 Game Mechanics
+
+### Disappearing Moves Logic
+
+- **First X Disappears**: When O makes their 3rd move, X's first move is marked to disappear
+- **Queue Management**: Each player's moves are tracked in separate queues
+- **Automatic Removal**: On the 4th move, the oldest move is automatically removed
+- **Visual Indicators**: Players can see which move will disappear next
+
+### Win Detection
+
+- Checks all 8 possible winning combinations after each move
+- Highlights winning squares when a player wins
+- Prevents further moves after a win
+
+---
+
+**Enjoy the game! 🎮✨**
